@@ -41,6 +41,7 @@ class FWMMain():
             for tile in game_tiles:
                 tile.display(self.screen)
             player.display(self.screen)
+            # TODO add shapeshifting listener on 'S'
             pygame.time.wait(50)
             self.clock.tick(60)
             pygame.display.flip()
