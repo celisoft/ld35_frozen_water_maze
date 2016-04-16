@@ -4,6 +4,7 @@ import pygame
 import pytmx
 from pygame.locals import *
 
+from GamePlayer import Player
 from GameTile import GameTile
 
 
@@ -26,16 +27,20 @@ class FWMMain():
         # Load data
         tmxdata = pytmx.load_pygame("assets/map.tmx")
         game_tiles = []
-        for coord_x in range(0, 18):
-            for coord_y in range(0, 12):
+        for coord_x in range(18):
+            for coord_y in range(12):
                 img = tmxdata.get_tile_image(coord_x, coord_y, 0)
                 if img is not None:
                     game_tiles.append(GameTile(img, coord_x, coord_y))
+
+        # Init player
+        player = Player()
 
         # Game loop
         while not self.game_ended:
             for tile in game_tiles:
                 tile.display(self.screen)
+            player.display(self.screen)
             pygame.time.wait(50)
             self.clock.tick(60)
             pygame.display.flip()
