@@ -93,10 +93,15 @@ class FWMMain():
 
         # Init timer
         self.timer = 15
+        timer_path = os.path.dirname(__file__) + os.sep + "assets/timer.png"
+        self.timer_image = pygame.image.load(timer_path)
+        self.timer_rect = self.timer_image.get_rect()
+        self.timer_rect.top = 5
+        self.timer_rect.left = self.screen.get_width() - 64
         self.timer_text_image = self.font.render(str(self.timer), True, (255, 255, 255))
         self.timer_text_rect = self.timer_text_image.get_rect()
-        self.timer_text_rect.top = 5
-        self.timer_text_rect.left = self.screen.get_width() - 64
+        self.timer_text_rect.top = 24
+        self.timer_text_rect.left = self.screen.get_width() - 92
 
         # Init internal event -> droplet fall
         pygame.time.set_timer(pygame.USEREVENT, 5000)
@@ -112,6 +117,7 @@ class FWMMain():
             self.screen.blit(background, Rect(0, 0, 64 * 18, 64 * 12))
 
             self.screen.blit(self.score_image, self.score_rect)
+            self.screen.blit(self.timer_image, self.timer_rect)
             self.screen.blit(self.timer_text_image, self.timer_text_rect)
 
             is_player_falling = False
