@@ -13,8 +13,8 @@ class GameTile(pygame.Surface):
 
         self.surface = surface
         self.rect = surface.get_rect()
-        self.rect.x = coord_x*64
-        self.rect.y = coord_y*64
+        self.rect.x = coord_x * 64
+        self.rect.y = coord_y * 64
 
     def display(self, screen):
         """

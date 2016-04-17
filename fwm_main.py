@@ -59,6 +59,7 @@ class FWMMain():
 
         # Game loop
         while not self.game_ended:
+            self.screen.clear()
             self.check_game_event()
             for tile in game_tiles:
                 tile.display(self.screen)
@@ -75,10 +76,12 @@ class FWMMain():
             if event.type == pygame.USEREVENT:
                 self.ambient_droplet.play()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s:
-                    # TODO add shapeshifting listener on 'S'
-                    #self.player.shapeshift()
-                    pass
+                if event.key == pygame.K_i:
+                    self.player.shapeshift(Player.PLAYER_ICE)
+                elif event.key == pygame.K_c:
+                    self.player.shapeshift(Player.PLAYER_CLOUD)
+                elif event.key == pygame.K_d:
+                    self.player.shapeshift(Player.PLAYER_DROPLET)
             elif event.type == pygame.QUIT:
                 self.game_ended = True
 

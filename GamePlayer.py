@@ -27,7 +27,8 @@ class Player(pygame.sprite.Sprite):
                 self.spritesheet.subsurface(self.PLAYER_WIDTH * sprite_id, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT))
 
         # Default sprite is the droplet one
-        self.image = self.sprites[self.PLAYER_DROPLET]
+        self.current_shape = self.PLAYER_DROPLET
+        self.image = self.sprites[self.current_shape]
 
         # Define the default rect
         self.rect = (0, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT)
@@ -41,3 +42,16 @@ class Player(pygame.sprite.Sprite):
         :param screen: The surface where the sprite will be blitted
         """
         self.group.draw(screen)
+
+    def shapeshift(self, shape_id):
+        """
+        Change the shape of our player
+        :param shape_id: Player.PLAYER_CLOUD, Player.PLAYER_DROPLET, Player.PLAYER_ICE
+        :return:
+        """
+        possibilities = {self.PLAYER_CLOUD, self.PLAYER_DROPLET, self.PLAYER_ICE} - {self.current_shape}
+        if shape_id in possibilities:
+            self.current_shape = shape_id
+            self.image = self.sprites[shape_id]
+
+
