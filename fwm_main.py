@@ -179,6 +179,8 @@ class FWMMain():
                         self.player.move_down()
                 elif event.key == pygame.K_f:
                     pygame.display.toggle_fullscreen()
+                elif event.key == pygame.K_ESCAPE:
+                    self.game_ended = True
             elif event.type == pygame.QUIT:
                 self.game_ended = True
 
