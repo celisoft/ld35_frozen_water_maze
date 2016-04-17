@@ -10,8 +10,8 @@ class Player(pygame.sprite.Sprite):
     PLAYER_DROPLET = 1
     PLAYER_ICE = 2
 
-    PLAYER_WIDTH = 32
-    PLAYER_HEIGHT = 32
+    PLAYER_WIDTH = 64
+    PLAYER_HEIGHT = 64
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -20,10 +20,11 @@ class Player(pygame.sprite.Sprite):
         path = os.path.dirname(__file__) + os.sep + "assets/playersheet.png"
         self.spritesheet = pygame.image.load(path)
 
-        # Define the player sprites from the spritesheet (32x32)
+        # Define the player sprites from the spritesheet (64x64)
         self.sprites = []
         for sprite_id in range(3):
-            self.sprites.append(self.spritesheet.subsurface(self.PLAYER_WIDTH * sprite_id, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT))
+            self.sprites.append(
+                self.spritesheet.subsurface(self.PLAYER_WIDTH * sprite_id, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT))
 
         # Default sprite is the droplet one
         self.image = self.sprites[self.PLAYER_DROPLET]
