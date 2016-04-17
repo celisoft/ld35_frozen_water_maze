@@ -51,6 +51,10 @@ class FWMMain():
         self.ambient_droplet = pygame.mixer.Sound(droplet_path)
         self.ambient_droplet.set_volume(0.3)
 
+        # Init game background
+        bg_path = os.path.dirname(__file__) + os.sep + "assets/bg.jpg"
+        background = pygame.image.load(bg_path)
+
         # Init player
         self.player = Player()
 
@@ -61,8 +65,12 @@ class FWMMain():
         while not self.game_ended:
             self.screen.fill((0, 0, 0))
             self.check_game_event()
+
+            self.screen.blit(background, Rect(0, 0, 64*18, 64*12))
+
             for tile in game_tiles:
                 tile.display(self.screen)
+
             self.player.display(self.screen)
             pygame.time.wait(50)
             self.clock.tick(60)
@@ -90,6 +98,8 @@ class FWMMain():
                     self.player.move_up()
                 elif event.key == pygame.K_DOWN:
                     self.player.move_down()
+                elif event.key == pygame.K_f:
+                    pygame.display.toggle_fullscreen()
             elif event.type == pygame.QUIT:
                 self.game_ended = True
 
