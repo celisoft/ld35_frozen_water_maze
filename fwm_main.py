@@ -31,6 +31,8 @@ class FWMMain():
         pygame.display.set_icon(pygame.image.load(icon_path))
         self.screen = pygame.display.set_mode((64 * 18, 64 * 12))
 
+        self.font = pygame.font.Font(None, 36)
+
         # Load data
         tmxpath = os.path.dirname(__file__) + os.sep + "assets/map.tmx"
         tmxdata = pytmx.load_pygame(tmxpath)
@@ -84,15 +86,23 @@ class FWMMain():
 
         # Init score
         self.score = 0
+        self.score_image = self.font.render(str(self.score), True, (255, 255, 255))
+        self.score_rect = self.score_image.get_rect()
+        self.score_rect.top = 5
+        self.score_rect.left = 64
 
         # Init timer
         self.timer = 15
+        self.timer_text_image = self.font.render(str(self.timer), True, (255, 255, 255))
+        self.timer_text_rect = self.timer_text_image.get_rect()
+        self.timer_text_rect.top = 5
+        self.timer_text_rect.left = self.screen.get_width() - 64
 
         # Init internal event -> droplet fall
         pygame.time.set_timer(pygame.USEREVENT, 5000)
 
         # Init internal event -> timer decrease
-        pygame.time.set_timer(pygame.USEREVENT+1, 1000)
+        pygame.time.set_timer(pygame.USEREVENT + 1, 1000)
 
         # Game loop
         while not self.game_ended:
@@ -100,6 +110,9 @@ class FWMMain():
             self.check_game_event()
 
             self.screen.blit(background, Rect(0, 0, 64 * 18, 64 * 12))
+
+            self.screen.blit(self.score_image, self.score_rect)
+            self.screen.blit(self.timer_text_image, self.timer_text_rect)
 
             is_player_falling = False
             if self.player.current_shape != Player.PLAYER_CLOUD:
@@ -134,6 +147,7 @@ class FWMMain():
                     self.score += 1
                     self.get_sfx.play()
                     self.game_collectibles.remove(point)
+                    self.score_image = self.font.render(str(self.score), True, (255, 255, 255))
 
             self.player.display(self.screen)
 
@@ -148,10 +162,11 @@ class FWMMain():
         for event in pygame.event.get():
             if event.type == pygame.USEREVENT:
                 self.ambient_droplet.play()
-            elif event.type == pygame.USEREVENT+1:
+            elif event.type == pygame.USEREVENT + 1:
                 if self.timer == 0:
                     self.game_ended = True
                 self.timer -= 1
+                self.timer_text_image = self.font.render(str(self.timer), True, (255, 255, 255))
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_i:
                     self.player.shapeshift(Player.PLAYER_ICE)
