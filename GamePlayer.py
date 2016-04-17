@@ -24,14 +24,15 @@ class Player(pygame.sprite.Sprite):
         self.sprites = []
         for sprite_id in range(3):
             self.sprites.append(
-                self.spritesheet.subsurface(self.PLAYER_WIDTH * sprite_id, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT))
+                    self.spritesheet.subsurface(self.PLAYER_WIDTH * sprite_id, 0, self.PLAYER_WIDTH,
+                                                self.PLAYER_HEIGHT))
 
         # Default sprite is the droplet one
         self.current_shape = self.PLAYER_DROPLET
         self.image = self.sprites[self.current_shape]
 
         # Define the default rect
-        self.rect = (0, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT)
+        self.rect = pygame.Rect(0, 0, self.PLAYER_WIDTH, self.PLAYER_HEIGHT)
 
         # Set the group as a single sprite one
         self.group = pygame.sprite.GroupSingle(self)
@@ -43,6 +44,20 @@ class Player(pygame.sprite.Sprite):
         """
         self.group.draw(screen)
 
+    def move_up(self):
+        if self.current_shape == Player.PLAYER_CLOUD:
+            self.rect.top -= 1 * 64
+
+    def move_down(self):
+        if self.current_shape == Player.PLAYER_CLOUD:
+            self.rect.top += 1 * 64
+
+    def move_left(self):
+        self.rect.left -= 1 * 64
+
+    def move_right(self):
+        self.rect.left += 1 * 64
+
     def shapeshift(self, shape_id):
         """
         Change the shape of our player
@@ -53,5 +68,3 @@ class Player(pygame.sprite.Sprite):
         if shape_id in possibilities:
             self.current_shape = shape_id
             self.image = self.sprites[shape_id]
-
-

@@ -82,8 +82,17 @@ class FWMMain():
                     self.player.shapeshift(Player.PLAYER_CLOUD)
                 elif event.key == pygame.K_d:
                     self.player.shapeshift(Player.PLAYER_DROPLET)
+                elif event.key == pygame.K_RIGHT:
+                    self.player.move_right()
+                elif event.key == pygame.K_LEFT:
+                    self.player.move_left()
+                elif event.key == pygame.K_UP:
+                    self.player.move_up()
+                elif event.key == pygame.K_DOWN:
+                    self.player.move_down()
             elif event.type == pygame.QUIT:
                 self.game_ended = True
+
 
 if __name__ == "__main__":
     FWMMain()
