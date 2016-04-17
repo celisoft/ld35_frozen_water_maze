@@ -6,6 +6,7 @@ import pytmx
 from pygame.locals import *
 from pygame.sprite import collide_rect
 
+from Collectible import Collectible
 from GamePlayer import Player
 from GameTile import GameTile
 from Dangers import Fire, Water
@@ -32,6 +33,7 @@ class FWMMain():
         self.game_tiles = []
         self.game_fires = []
         self.game_waters = []
+        self.game_collectibles = []
         for coord_x in range(18):
             for coord_y in range(12):
                 img = tmxdata.get_tile_image(coord_x, coord_y, 0)
@@ -43,6 +45,9 @@ class FWMMain():
                 water = tmxdata.get_tile_image(coord_x, coord_y, 2)
                 if water is not None:
                     self.game_waters.append(Water(water, coord_x, coord_y))
+                collectible = tmxdata.get_tile_image(coord_x, coord_y, 3)
+                if collectible is not None:
+                    self.game_collectibles.append(Collectible(coord_x, coord_y))
 
         # Init music
         music_path = os.path.dirname(__file__) + os.sep + "assets/sfx/bg_music.ogg"
@@ -61,12 +66,20 @@ class FWMMain():
         self.ambient_droplet = pygame.mixer.Sound(droplet_path)
         self.ambient_droplet.set_volume(0.3)
 
+        # Init get sound
+        get_path = os.path.dirname(__file__) + os.sep + "assets/sfx/get.ogg"
+        self.get_sfx = pygame.mixer.Sound(get_path)
+        self.get_sfx.set_volume(0.2)
+
         # Init game background
         bg_path = os.path.dirname(__file__) + os.sep + "assets/bg.jpg"
         background = pygame.image.load(bg_path)
 
         # Init player
         self.player = Player()
+
+        # Init score
+        self.score = 0
 
         # Init internal event -> droplet fall
         pygame.time.set_timer(pygame.USEREVENT, 5000)
@@ -105,7 +118,15 @@ class FWMMain():
                 if collide_rect(self.player, danger):
                     self.game_ended = True
 
+            for point in self.game_collectibles:
+                point.display(self.screen)
+                if collide_rect(self.player, point):
+                    self.score += 1
+                    self.get_sfx.play()
+                    self.game_collectibles.remove(point)
+
             self.player.display(self.screen)
+
             pygame.time.wait(50)
             self.clock.tick(60)
             pygame.display.flip()

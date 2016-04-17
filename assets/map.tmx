@@ -21,9 +21,12 @@
  <tileset firstgid="9" name="solbassin2" tilewidth="64" tileheight="64">
   <image source="solbassin2.png" width="64" height="64"/>
  </tileset>
+ <tileset firstgid="10" name="spritesheet_point" tilewidth="37" tileheight="32">
+  <image source="spritesheet_point.png" width="150" height="32"/>
+ </tileset>
  <layer name="layer1" width="18" height="12" opacity="0.38">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA2NgGHyAEYqZiMCMWPBgBNjcic/dQ8FPIECMv0j1+3ACAI6Pw7tgAwAA
+   H4sIAAAAAAAAA2NgGHyAEYqZiMCMWPQNRsCIBSP7Ad3d6GoHK8DmL3LwcAUAZexAqGADAAA=
   </data>
  </layer>
  <layer name="fire" width="18" height="12">
@@ -34,6 +37,11 @@
  <layer name="eau" width="18" height="12">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA2NgGAWDBbAAMTMQcw60Q0YB1QAAM9CEiGADAAA=
+  </data>
+ </layer>
+ <layer name="points" width="18" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgoC7gwkHjEhvKAJs/hqrfcLl7qPpnsAAApj5FA2ADAAA=
   </data>
  </layer>
 </map>
