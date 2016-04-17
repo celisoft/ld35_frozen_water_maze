@@ -4,6 +4,7 @@ import os
 import pygame
 import pytmx
 from pygame.locals import *
+from pygame.sprite import collide_rect
 
 from GamePlayer import Player
 from GameTile import GameTile
@@ -68,8 +69,17 @@ class FWMMain():
 
             self.screen.blit(background, Rect(0, 0, 64*18, 64*12))
 
+            is_player_falling = False
+            if self.player.current_shape != Player.PLAYER_CLOUD:
+                is_player_falling = True
+
             for tile in game_tiles:
                 tile.display(self.screen)
+                if self.player.rect.bottom == tile.rect.top and self.player.rect.left == tile.rect.left:
+                    is_player_falling = False
+
+            if is_player_falling:
+                self.player.fall(game_tiles)
 
             self.player.display(self.screen)
             pygame.time.wait(50)

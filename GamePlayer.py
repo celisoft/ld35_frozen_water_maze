@@ -52,6 +52,9 @@ class Player(pygame.sprite.Sprite):
         if self.current_shape == Player.PLAYER_CLOUD:
             self.rect.top += 1 * 64
 
+    def fall(self, ground_tiles):
+        self.rect.top += 1 * 64
+
     def move_left(self):
         self.rect.left -= 1 * 64
 
