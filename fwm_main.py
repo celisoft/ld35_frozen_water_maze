@@ -52,7 +52,7 @@ class FWMMain():
         self.ambient_droplet.set_volume(0.3)
 
         # Init player
-        player = Player()
+        self.player = Player()
 
         # Init internal event -> droplet fall
         pygame.time.set_timer(pygame.USEREVENT, 5000)
@@ -62,8 +62,7 @@ class FWMMain():
             self.check_game_event()
             for tile in game_tiles:
                 tile.display(self.screen)
-            player.display(self.screen)
-            # TODO add shapeshifting listener on 'S'
+            self.player.display(self.screen)
             pygame.time.wait(50)
             self.clock.tick(60)
             pygame.display.flip()
@@ -75,6 +74,13 @@ class FWMMain():
         for event in pygame.event.get():
             if event.type == pygame.USEREVENT:
                 self.ambient_droplet.play()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    # TODO add shapeshifting listener on 'S'
+                    #self.player.shapeshift()
+                    pass
+            elif event.type == pygame.QUIT:
+                self.game_ended = True
 
 if __name__ == "__main__":
     FWMMain()
