@@ -29,7 +29,8 @@ class FWMMain():
         pygame.display.set_caption('Frozen Water Maze')
 
         # Load data
-        tmxdata = pytmx.load_pygame("assets/map.tmx")
+        tmxpath = os.path.dirname(__file__) + os.sep + "assets/map.tmx"
+        tmxdata = pytmx.load_pygame(tmxpath)
         self.game_tiles = []
         self.game_fires = []
         self.game_waters = []
