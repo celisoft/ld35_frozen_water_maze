@@ -27,6 +27,8 @@ class FWMMain():
 
         self.screen = pygame.display.set_mode((64 * 18, 64 * 12))
         pygame.display.set_caption('Frozen Water Maze')
+        icon_path = os.path.dirname(__file__) + os.sep + "assets/ico.png"
+        pygame.display.set_icon(pygame.image.load(icon_path))
 
         # Load data
         tmxpath = os.path.dirname(__file__) + os.sep + "assets/map.tmx"
