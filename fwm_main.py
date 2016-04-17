@@ -10,6 +10,7 @@ from Collectible import Collectible
 from GamePlayer import Player
 from GameTile import GameTile
 from Dangers import Fire, Water
+from Grid import Grid
 
 
 class FWMMain():
@@ -40,6 +41,7 @@ class FWMMain():
         self.game_fires = []
         self.game_waters = []
         self.game_collectibles = []
+        self.game_grids = []
         for coord_x in range(18):
             for coord_y in range(12):
                 img = tmxdata.get_tile_image(coord_x, coord_y, 0)
@@ -54,6 +56,9 @@ class FWMMain():
                 collectible = tmxdata.get_tile_image(coord_x, coord_y, 3)
                 if collectible is not None:
                     self.game_collectibles.append(Collectible(coord_x, coord_y))
+                grid = tmxdata.get_tile_image(coord_x, coord_y, 4)
+                if grid is not None:
+                    self.game_grids.append(Grid(grid, coord_x, coord_y))
 
         # Init music
         music_path = os.path.dirname(__file__) + os.sep + "assets/sfx/bg_music.ogg"
@@ -139,6 +144,11 @@ class FWMMain():
             for tile in self.game_tiles:
                 tile.display(self.screen)
                 if self.player.rect.bottom == tile.rect.top and self.player.rect.left == tile.rect.left:
+                    is_player_falling = False
+
+            for tile in self.game_grids:
+                tile.display(self.screen)
+                if self.player.rect.bottom == tile.rect.top and self.player.rect.left == tile.rect.left and self.player.current_shape == Player.PLAYER_ICE:
                     is_player_falling = False
 
             for danger in self.game_waters:
