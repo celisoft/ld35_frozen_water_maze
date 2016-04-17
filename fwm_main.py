@@ -103,6 +103,18 @@ class FWMMain():
         self.timer_text_rect.top = 24
         self.timer_text_rect.left = self.screen.get_width() - 92
 
+        # Startup screen display
+        startup_img_path = os.path.dirname(__file__) + os.sep + "assets/title.jpg"
+        self.startup_image = pygame.image.load(startup_img_path)
+        self.screen.fill((0, 0, 0))
+        startup_screen_display = True
+
+        while startup_screen_display:
+            self.screen.blit(self.startup_image, Rect(0, 0, self.screen.get_width(), self.screen.get_height()))
+            pygame.display.flip()
+            pygame.time.wait(3000)
+            startup_screen_display = False
+
         # Init internal event -> droplet fall
         pygame.time.set_timer(pygame.USEREVENT, 5000)
 
@@ -162,6 +174,7 @@ class FWMMain():
             pygame.display.flip()
 
         pygame.quit()
+
 
     def check_game_event(self):
         """ Check game events """
