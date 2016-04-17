@@ -28,12 +28,12 @@ class FWMMain():
 
         # Load data
         tmxdata = pytmx.load_pygame("assets/map.tmx")
-        game_tiles = []
+        self.game_tiles = []
         for coord_x in range(18):
             for coord_y in range(12):
                 img = tmxdata.get_tile_image(coord_x, coord_y, 0)
                 if img is not None:
-                    game_tiles.append(GameTile(img, coord_x, coord_y))
+                    self.game_tiles.append(GameTile(img, coord_x, coord_y))
 
         # Init music
         music_path = os.path.dirname(__file__) + os.sep + "assets/sfx/bg_music.ogg"
@@ -73,13 +73,13 @@ class FWMMain():
             if self.player.current_shape != Player.PLAYER_CLOUD:
                 is_player_falling = True
 
-            for tile in game_tiles:
+            for tile in self.game_tiles:
                 tile.display(self.screen)
                 if self.player.rect.bottom == tile.rect.top and self.player.rect.left == tile.rect.left:
                     is_player_falling = False
 
             if is_player_falling:
-                self.player.fall(game_tiles)
+                self.player.fall()
 
             self.player.display(self.screen)
             pygame.time.wait(50)
@@ -105,9 +105,19 @@ class FWMMain():
                 elif event.key == pygame.K_LEFT:
                     self.player.move_left()
                 elif event.key == pygame.K_UP:
-                    self.player.move_up()
+                    is_move_possible = True
+                    for tile in self.game_tiles:
+                        if self.player.rect.top == tile.rect.bottom and self.player.rect.left == tile.rect.left:
+                            is_move_possible = False
+                    if is_move_possible:
+                        self.player.move_up()
                 elif event.key == pygame.K_DOWN:
-                    self.player.move_down()
+                    is_move_possible = True
+                    for tile in self.game_tiles:
+                        if self.player.rect.bottom == tile.rect.top and self.player.rect.left == tile.rect.left:
+                            is_move_possible = False
+                    if is_move_possible:
+                        self.player.move_down()
                 elif event.key == pygame.K_f:
                     pygame.display.toggle_fullscreen()
             elif event.type == pygame.QUIT:
