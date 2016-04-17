@@ -25,10 +25,11 @@ class FWMMain():
         # Clock
         self.clock = pygame.time.Clock()
 
-        self.screen = pygame.display.set_mode((64 * 18, 64 * 12))
+        # Setting up the display
         pygame.display.set_caption('Frozen Water Maze')
         icon_path = os.path.dirname(__file__) + os.sep + "assets/ico.png"
         pygame.display.set_icon(pygame.image.load(icon_path))
+        self.screen = pygame.display.set_mode((64 * 18, 64 * 12))
 
         # Load data
         tmxpath = os.path.dirname(__file__) + os.sep + "assets/map.tmx"
@@ -84,8 +85,14 @@ class FWMMain():
         # Init score
         self.score = 0
 
+        # Init timer
+        self.timer = 15
+
         # Init internal event -> droplet fall
         pygame.time.set_timer(pygame.USEREVENT, 5000)
+
+        # Init internal event -> timer decrease
+        pygame.time.set_timer(pygame.USEREVENT+1, 1000)
 
         # Game loop
         while not self.game_ended:
@@ -141,6 +148,10 @@ class FWMMain():
         for event in pygame.event.get():
             if event.type == pygame.USEREVENT:
                 self.ambient_droplet.play()
+            elif event.type == pygame.USEREVENT+1:
+                if self.timer == 0:
+                    self.game_ended = True
+                self.timer -= 1
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_i:
                     self.player.shapeshift(Player.PLAYER_ICE)
