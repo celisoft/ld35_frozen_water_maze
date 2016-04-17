@@ -59,7 +59,7 @@ class FWMMain():
 
         # Game loop
         while not self.game_ended:
-            self.screen.clear()
+            self.screen.fill((0, 0, 0))
             self.check_game_event()
             for tile in game_tiles:
                 tile.display(self.screen)
