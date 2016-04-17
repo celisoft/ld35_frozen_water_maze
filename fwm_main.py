@@ -8,6 +8,7 @@ from pygame.sprite import collide_rect
 
 from GamePlayer import Player
 from GameTile import GameTile
+from Dangers import Fire, Water
 
 
 class FWMMain():
@@ -29,11 +30,19 @@ class FWMMain():
         # Load data
         tmxdata = pytmx.load_pygame("assets/map.tmx")
         self.game_tiles = []
+        self.game_fires = []
+        self.game_waters = []
         for coord_x in range(18):
             for coord_y in range(12):
                 img = tmxdata.get_tile_image(coord_x, coord_y, 0)
                 if img is not None:
                     self.game_tiles.append(GameTile(img, coord_x, coord_y))
+                fire = tmxdata.get_tile_image(coord_x, coord_y, 1)
+                if fire is not None:
+                    self.game_fires.append(Fire(coord_x, coord_y))
+                water = tmxdata.get_tile_image(coord_x, coord_y, 2)
+                if water is not None:
+                    self.game_waters.append(Water(water, coord_x, coord_y))
 
         # Init music
         music_path = os.path.dirname(__file__) + os.sep + "assets/sfx/bg_music.ogg"
@@ -67,7 +76,7 @@ class FWMMain():
             self.screen.fill((0, 0, 0))
             self.check_game_event()
 
-            self.screen.blit(background, Rect(0, 0, 64*18, 64*12))
+            self.screen.blit(background, Rect(0, 0, 64 * 18, 64 * 12))
 
             is_player_falling = False
             if self.player.current_shape != Player.PLAYER_CLOUD:
@@ -78,8 +87,23 @@ class FWMMain():
                 if self.player.rect.bottom == tile.rect.top and self.player.rect.left == tile.rect.left:
                     is_player_falling = False
 
+            for danger in self.game_waters:
+                danger.display(self.screen)
+                if self.player.rect.bottom == danger.rect.top and self.player.rect.left == danger.rect.left:
+                    if self.player.current_shape != Player.PLAYER_CLOUD:
+                        self.game_ended = True
+                        is_player_falling = False
+                elif collide_rect(self.player, danger):
+                    self.game_ended = True
+                    is_player_falling = False
+
             if is_player_falling:
                 self.player.fall()
+
+            for danger in self.game_fires:
+                danger.display(self.screen)
+                if collide_rect(self.player, danger):
+                    self.game_ended = True
 
             self.player.display(self.screen)
             pygame.time.wait(50)
