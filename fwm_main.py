@@ -92,7 +92,7 @@ class FWMMain():
         self.score_rect.left = 64
 
         # Init timer
-        self.timer = 15
+        self.timer = 20
         timer_path = os.path.dirname(__file__) + os.sep + "assets/timer.png"
         self.timer_image = pygame.image.load(timer_path)
         self.timer_rect = self.timer_image.get_rect()
@@ -175,7 +175,6 @@ class FWMMain():
 
         pygame.quit()
 
-
     def check_game_event(self):
         """ Check game events """
         for event in pygame.event.get():
@@ -186,11 +185,15 @@ class FWMMain():
                     self.game_ended = True
                 self.timer -= 1
                 self.timer_text_image = self.font.render(str(self.timer), True, (255, 255, 255))
+            elif event.type == pygame.USEREVENT + 2:
+                self.player.shapeshift(Player.PLAYER_DROPLET)
+                pygame.time.set_timer(pygame.USEREVENT + 2, 0)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_i:
                     self.player.shapeshift(Player.PLAYER_ICE)
                 elif event.key == pygame.K_c:
                     self.player.shapeshift(Player.PLAYER_CLOUD)
+                    pygame.time.set_timer(pygame.USEREVENT + 2, 2000)
                 elif event.key == pygame.K_d:
                     self.player.shapeshift(Player.PLAYER_DROPLET)
                 elif event.key == pygame.K_RIGHT:
