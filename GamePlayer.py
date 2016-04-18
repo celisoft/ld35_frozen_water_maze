@@ -56,10 +56,12 @@ class Player(pygame.sprite.Sprite):
         self.rect.top += 1 * 64
 
     def move_left(self):
-        self.rect.left -= 1 * 64
+        if self.rect.left > 0 :
+            self.rect.left -= 1 * 64
 
     def move_right(self):
-        self.rect.left += 1 * 64
+        if self.rect.left < 64*17 :
+            self.rect.left += 1 * 64
 
     def shapeshift(self, shape_id):
         """
