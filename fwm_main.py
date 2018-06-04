@@ -22,7 +22,7 @@ class FWMMain():
         self.game_started = False
         self.game_paused = False
         self.game_ended = False
-
+        self.text = "Too bad !"
         # Clock
         self.clock = pygame.time.Clock()
 
@@ -82,9 +82,10 @@ class FWMMain():
         self.get_sfx = pygame.mixer.Sound(get_path)
         self.get_sfx.set_volume(0.2)
 
-        # Init game background
+        # Init game
+        # ground
         bg_path = os.path.dirname(__file__) + os.sep + "assets/bg.jpg"
-        background = pygame.image.load(bg_path)
+        self.background_img = pygame.image.load(bg_path)
 
         # Init player
         self.player = Player()
@@ -131,7 +132,7 @@ class FWMMain():
             self.screen.fill((0, 0, 0))
             self.check_game_event()
 
-            self.screen.blit(background, Rect(0, 0, 64 * 18, 64 * 12))
+            self.screen.blit(self.background_img, Rect(0, 0, 64 * 18, 64 * 12))
 
             self.screen.blit(self.score_image, self.score_rect)
             self.screen.blit(self.timer_image, self.timer_rect)
@@ -177,12 +178,32 @@ class FWMMain():
                     self.game_collectibles.remove(point)
                     self.score_image = self.font.render(str(self.score), True, (255, 255, 255))
 
+            if self.game_collectibles.__len__()==0:
+                self.game_ended=True
+                self.text = "Congrat's !!"
             self.player.display(self.screen)
 
             pygame.time.wait(50)
             self.clock.tick(60)
             pygame.display.flip()
 
+        self.startup_screen_display = True
+        cpt = 0
+        while self.startup_screen_display:
+            self.screen.blit(self.background_img, (0, 0))
+            # Endscreen text ( by default text is "Too bad !" )
+            # ( if game_collectibles(len) == 0: "Congrat's!"  )
+            font = pygame.font.SysFont('Arial', 100, True)
+            text= font.render(self.text, True, (255, 255, 255))
+            text_rect = text.get_rect()
+            text_rect.midtop = ( 550, 300)
+            self.screen.blit(text, text_rect)
+
+            pygame.time.wait(300)
+            pygame.display.flip()
+            cpt += 1
+            if cpt ==10:
+                self.startup_screen_display = False
         pygame.quit()
 
     def check_game_event(self):
